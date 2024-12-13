@@ -334,15 +334,19 @@ const Activities = () => {
                 {aboitizPitchPageCards.map((card) => (
                   <Grid item xs={12} md={4} lg={4} key={card.id}>
                     <BlankCard onClick={() => handleViewDynamic(card.id)}>
-                      <div style={{ position: "relative" }}>
-                        <Avatar
-                          src={
-                            card.photo ? card.photo : "/images/products/s8.jpg"
-                          }
-                          variant="square"
-                          sx={{ height: 250, width: "100%" }}
-                        />
-                      </div>
+                      
+                      <div style={{ position: "relative", height: 250, width: "100%", overflow: "hidden" }}>
+                  <img
+                    src={card.photo ? card.photo : "/images/products/s8.jpg"}
+                    alt={card.title}
+                    style={{
+                      height: "100%",
+                      width: "100%",
+                      objectFit: "contain", // Ensures the image fills the container
+                      display: "block", // Removes inline gaps for images
+                    }}
+                  />
+                </div>
                       <CardContent sx={{ p: 3, pt: 2 }}>
                         <Typography variant="h6" sx={{ mb: 1 }}>
                           {card.title}

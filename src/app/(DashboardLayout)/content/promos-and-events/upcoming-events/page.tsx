@@ -338,11 +338,16 @@ const Events = () => {
           {eventsPageCards.map((card) => (
             <Grid item xs={12} md={4} lg={4} key={card.id}>
               <BlankCard>
-                <div style={{ position: "relative" }}>
-                  <Avatar
+              <div style={{ position: "relative", height: 250, width: "100%", overflow: "hidden" }}>
+                  <img
                     src={card.photo}
-                    variant="square"
-                    sx={{ height: 250, width: "100%" }}
+                    alt={card.title}
+                    style={{
+                      height: "100%",
+                      width: "100%",
+                      objectFit: "contain", // Ensures the image fills the container
+                      display: "block", // Removes inline gaps for images
+                    }}
                   />
                 </div>
                 <CardContent sx={{ p: 3, pt: 2 }}>

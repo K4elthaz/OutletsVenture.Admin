@@ -246,83 +246,77 @@ const Shop = () => {
           <Grid container spacing={3}>
             {shopPageCards.map((card) => (
               <Grid item xs={12} md={4} lg={4} key={card.id}>
-                <BlankCard>
-                  <div style={{ position: "relative" }}>
-                    <Avatar
-                      src={card.photo}
-                      variant="square"
-                      sx={{ height: 250, width: "100%" }}
-                    />
-                  </div>
-                  <CardContent sx={{ p: 3, pt: 2 }}>
-                    <Typography variant="h6" sx={{ mb: 1 }}>
-                      {card.title}
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      color="text.secondary"
-                      sx={{ mb: 1 }}
-                    >
-                      Contact: {card.contactInformation}
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      color="text.secondary"
-                      sx={{ mb: 1 }}
-                    >
-                      Opening Hour: {card.openingHour}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      Closing Hour: {card.closingHour}
-                    </Typography>
-
-                    <div
-                      style={{
-                        position: "absolute",
-                        bottom: 10,
-                        right: 10,
-                        display: "flex",
-                        gap: "2px",
+              <BlankCard>
+                <div style={{ position: "relative", height: 250, width: "100%", overflow: "hidden" }}>
+                  <img
+                    src={card.photo}
+                    alt={card.title}
+                    style={{
+                      height: "100%",
+                      width: "100%",
+                      objectFit: "contain", // Ensures the image fills the container
+                      display: "block", // Removes inline gaps for images
+                    }}
+                  />
+                </div>
+                <CardContent sx={{ p: 3, pt: 2 }}>
+                  <Typography variant="h6" sx={{ mb: 1 }}>
+                    {card.title}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                    Contact: {card.contactInformation}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                    Opening Hour: {card.openingHour}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Closing Hour: {card.closingHour}
+                  </Typography>
+            
+                  <div
+                    style={{
+                      position: "absolute",
+                      bottom: 10,
+                      right: 10,
+                      display: "flex",
+                      gap: "2px",
+                    }}
+                  >
+                    <IconButton
+                      aria-label="edit"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        showModal(card);
+                      }}
+                      sx={{
+                        backgroundColor: "white",
+                        borderRadius: "50%",
+                        padding: "10px",
+                        fontSize: "10px",
                       }}
                     >
-                      <IconButton
-                        aria-label="edit"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          showModal(card);
-                        }}
-                        sx={{
-                          backgroundColor: "white",
-                          borderRadius: "50%",
-                          padding: "10px",
-                          fontSize: "10px",
-                        }}
-                      >
-                        <EditOutlined
-                          style={{ color: "green", fontSize: "18px" }}
-                        />
-                      </IconButton>
-                      <IconButton
-                        aria-label="delete"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleDelete(card.id);
-                        }}
-                        sx={{
-                          backgroundColor: "white",
-                          borderRadius: "50%",
-                          padding: "10px",
-                          fontSize: "17px",
-                        }}
-                      >
-                        <DeleteOutlined
-                          style={{ color: "red", fontSize: "18px" }}
-                        />
-                      </IconButton>
-                    </div>
-                  </CardContent>
-                </BlankCard>
-              </Grid>
+                      <EditOutlined style={{ color: "green", fontSize: "18px" }} />
+                    </IconButton>
+                    <IconButton
+                      aria-label="delete"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDelete(card.id);
+                      }}
+                      sx={{
+                        backgroundColor: "white",
+                        borderRadius: "50%",
+                        padding: "10px",
+                        fontSize: "17px",
+                      }}
+                    >
+                      <DeleteOutlined style={{ color: "red", fontSize: "18px" }} />
+                    </IconButton>
+                  </div>
+                </CardContent>
+              </BlankCard>
+            </Grid>
+            
             ))}
             <Grid item xs={12} md={4} lg={4}>
               <BlankCard onClick={() => showModal()}>
