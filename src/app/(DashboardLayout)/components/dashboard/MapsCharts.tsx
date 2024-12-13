@@ -233,7 +233,7 @@ const SalesOverview = ({
           onChange={handleChange}
         >
           <MenuItem value="map2D">2D Map</MenuItem>
-          <MenuItem value="map360">360 Map</MenuItem>
+          {/* <MenuItem value="map360">360 Map</MenuItem> */}
           {/* <MenuItem value="mapRoute">Map Route</MenuItem> */}
         </Select>
       }
