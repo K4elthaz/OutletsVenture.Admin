@@ -7,9 +7,9 @@ const withAuth = <P extends object>(
   const ComponentWithAuth = (props: P) => {
     const { user } = useAuth();
 
-    // if (!user) {
-    //   return <Login2 />;
-    // }
+    if (!user) {
+      return <Login2 />;
+    }
 
     return <WrappedComponent {...props} />;
   };
