@@ -22,7 +22,6 @@ const Feedback = ({
     titles: string[];
   };
 
-  // Track selected category (used or preferred)
   const [category, setCategory] = useState("Used");
   const [chartData, setChartData] = useState<ChartData>({
     used: [],
@@ -48,61 +47,61 @@ const Feedback = ({
     setCategory(event.target.value);
   };
 
-  // Chart color
   const theme = useTheme();
   const primary = theme.palette.primary.main;
   const secondary = theme.palette.secondary.main;
 
-  // Fetch feedback data from Firebase and aggregate it
+  // List of amenities (source of truth)
+  const amenitiesList = [
+    "ATM",
+    "Bike Stations",
+    "Breastfeeding",
+    "Fire Extinguisher",
+    "Parking Facilities",
+    "PWD Ramps",
+    "Restrooms",
+    "Seating Areas",
+    "Smoking Area",
+    "Trash Bins",
+    "Vending Machine",
+  ];
+
+  // Normalize amenity names for consistency
+  const normalizeAmenityName = (() => {
+    const map: Record<string, string> = {};
+    amenitiesList.forEach((amenity) => {
+      map[amenity.toLowerCase()] = amenity.toLowerCase().replace(/\s+/g, "_");
+    });
+    return (name: string): string => {
+      const normalized = map[name.toLowerCase()];
+      if (!normalized) {
+        console.warn(`Unrecognized amenity: "${name}"`);
+        return name.toLowerCase().replace(/\s+/g, "_"); // Fallback
+      }
+      return normalized;
+    };
+  })();
+
+  // Fetch and process data from Firebase
   useEffect(() => {
     const fetchData = () => {
       const feedbackRef = dbRef(db, `feedback`);
 
       onValue(feedbackRef, (snapshot) => {
-        let feedbackData = Object.values(snapshot.val() || {}) || [];
-
-        const amenityCounts: any = {
+        const feedbackData = Object.values(snapshot.val() || {}) || [];
+        const amenityCounts: {
+          used: Record<string, number>;
+          preferred: Record<string, number>;
+        } = {
           used: {},
           preferred: {},
         };
 
-        // Initialize all amenities with zero counts
-        const amenities = [
-          "atm",
-          "bike_station",
-          "breastfeeding",
-          "fire_extinguisher",
-          "parking",
-          "pwd_ramp",
-          "restroom",
-          "seating",
-          "smoking",
-          "trash",
-          "vending",
-        ];
-
-        // Normalize and map names for comparison
-        const normalizeAmenityName = (name: string): string => {
-          const map: Record<string, string> = {
-            atm: "atm",
-            "bike stations": "bike_station",
-            breastfeeding: "breastfeeding",
-            "fire extinguisher": "fire_extinguisher",
-            "parking facilities": "parking",
-            "pwd ramp": "pwd_ramp",
-            restrooms: "restroom",
-            seating: "seating",
-            "smoking area": "smoking",
-            trash: "trash",
-            vending: "vending",
-          };
-          return map[name.toLowerCase()] || name.toLowerCase();
-        };
-
         // Initialize counts for all amenities
-        amenities.forEach((amenity) => {
-          amenityCounts.used[amenity] = 0;
-          amenityCounts.preferred[amenity] = 0;
+        amenitiesList.forEach((amenity) => {
+          const normalizedAmenity = normalizeAmenityName(amenity);
+          amenityCounts.used[normalizedAmenity] = 0;
+          amenityCounts.preferred[normalizedAmenity] = 0;
         });
 
         // Process feedback data
@@ -125,30 +124,15 @@ const Feedback = ({
           }
         });
 
-        // Loop through all feedback entries
-        snapshot.forEach((childSnapshot) => {
-          const feedback = childSnapshot.val();
-
-          // Count used amenities
-          amenities.forEach((amenity) => {
-            if (feedback[`used_${amenity}`]) {
-              amenityCounts.used[amenity] += 1;
-            }
-            if (feedback[`pref_${amenity}`]) {
-              amenityCounts.preferred[amenity] += 1;
-            }
-          });
-        });
-
-        // Set the chart data based on aggregated results
-        const titles = amenities.map((amenity) =>
-          amenity.replace("_", " ").toUpperCase()
+        // Prepare chart data
+        const titles = amenitiesList.map((amenity) =>
+          normalizeAmenityName(amenity).replace("_", " ").toUpperCase()
         );
-        const usedCounts = amenities.map(
-          (amenity) => amenityCounts.used[amenity]
+        const usedCounts = amenitiesList.map(
+          (amenity) => amenityCounts.used[normalizeAmenityName(amenity)]
         );
-        const preferredCounts = amenities.map(
-          (amenity) => amenityCounts.preferred[amenity]
+        const preferredCounts = amenitiesList.map(
+          (amenity) => amenityCounts.preferred[normalizeAmenityName(amenity)]
         );
 
         setChartData({
@@ -162,67 +146,34 @@ const Feedback = ({
     fetchData();
   }, []);
 
-  // Chart configuration
   const optionscolumnchart: any = {
     chart: {
       type: "bar",
       fontFamily: "'Plus Jakarta Sans', sans-serif;",
       foreColor: "#adb0bb",
-      toolbar: {
-        show: true,
-      },
+      toolbar: { show: true },
       height: 370,
     },
     colors: [primary, secondary],
     plotOptions: {
       bar: {
         horizontal: false,
-        barHeight: "60%",
         borderRadius: [6],
         borderRadiusApplication: "end",
-        borderRadiusWhenStacked: "all",
       },
     },
-    stroke: {
-      show: true,
-      width: 5,
-      lineCap: "butt",
-      colors: ["transparent"],
-    },
-    dataLabels: {
-      enabled: false,
-    },
-    legend: {
-      show: true,
-    },
+    stroke: { show: true, width: 5, colors: ["transparent"] },
+    dataLabels: { enabled: false },
+    legend: { show: true },
     grid: {
       borderColor: "rgba(0,0,0,0.1)",
       strokeDashArray: 3,
-      xaxis: {
-        lines: {
-          show: true,
-        },
-      },
     },
-    yaxis: {
-      title: {
-        text: category,
-      },
-      tickAmount: 4,
-    },
-    xaxis: {
-      categories: chartData.titles,
-      title: {
-        text: "Amenities",
-      },
-    },
-    tooltip: {
-      theme: "dark",
-      fillSeriesColor: false,
-    },
+    yaxis: { title: { text: category }, tickAmount: 4 },
+    xaxis: { categories: chartData.titles, title: { text: "Amenities" } },
+    tooltip: { theme: "dark" },
   };
 
-  // Chart data based on Firebase fetch
   const seriescolumnchart: any = [
     {
       name: category,
