@@ -16,21 +16,21 @@ const mallMapCards = [
       "https://japanshopping.org/files/shopping_article_contents/-_2022-08-04-092504.jpg",
     href: "/content/maps/mall-map",
   },
-  {
-    id: uniqueId(),
-    title: "EMERGENCY AND AMENITIES ROUTES",
-    photo:
-      "https://static.vecteezy.com/system/resources/thumbnails/030/761/336/small_2x/elegant-evening-a-candlelit-dining-affair-with-wine-glasses-and-tableware-for-an-evening-dinner-party-generative-ai-photo.jpg",
-    // href: "/content/maps/disaster-map",
-    href: "/content/maps/emergency-amenities",
-  },
-  {
-    id: uniqueId(),
-    title: "AMENITIES MAP",
-    photo:
-      "https://www.cataloniahotels.com/en/blog/wp-content/uploads/2019/10/What-are-amenities-destacada.jpg",
-    href: "/content/maps/amenities-map",
-  },
+  // {
+  //   id: uniqueId(),
+  //   title: "EMERGENCY AND AMENITIES ROUTES",
+  //   photo:
+  //     "https://static.vecteezy.com/system/resources/thumbnails/030/761/336/small_2x/elegant-evening-a-candlelit-dining-affair-with-wine-glasses-and-tableware-for-an-evening-dinner-party-generative-ai-photo.jpg",
+  //   // href: "/content/maps/disaster-map",
+  //   href: "/content/maps/emergency-amenities",
+  // },
+  // {
+  //   id: uniqueId(),
+  //   title: "AMENITIES MAP",
+  //   photo:
+  //     "https://www.cataloniahotels.com/en/blog/wp-content/uploads/2019/10/What-are-amenities-destacada.jpg",
+  //   href: "/content/maps/amenities-map",
+  // },
 ];
 
 const MallMapPage = () => {
