@@ -340,11 +340,13 @@ const Page = () => {
             placeholder="Select Origin"
             style={{ width: "100%" }}
           >
-            {shops.map((shop) => (
-              <Select.Option key={shop.id} value={shop.id}>
-                {shop.title}
-              </Select.Option>
-            ))}
+            {shops
+              ?.filter((shop) => !shop?.id?.includes("emergency-amenities"))
+              ?.map((shop) => (
+                <Select.Option key={shop.id} value={shop.id}>
+                  {shop.title}
+                </Select.Option>
+              ))}
           </Select>
         </div>
 
