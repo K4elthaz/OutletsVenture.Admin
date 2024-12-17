@@ -8,6 +8,7 @@ import {
   Breadcrumbs,
   IconButton,
   Link as MuiLink,
+  Avatar,
 } from "@mui/material";
 import { Modal, Input, Form, Button, Upload, Collapse, message } from "antd";
 import Image from "next/image";
@@ -907,6 +908,13 @@ const MallMapPage = () => {
                     .map((card: any) => (
                       <Grid item xs={12} md={4} lg={4} key={card.id}>
                         <BlankCard>
+                        <div style={{ position: "relative" }}>
+                            <Avatar
+                              src={card.logo}
+                              variant="square"
+                              sx={{ height: 170, width: "100%" }}
+                            />
+                          </div>
                           <CardContent sx={{ p: 3, pt: 2 }}>
                             <Typography variant="h6">
                               {card.storeName}
@@ -951,6 +959,13 @@ const MallMapPage = () => {
                     .map((card: any, index: any) => (
                       <Grid item xs={12} md={4} lg={4} key={card.id + index}>
                         <BlankCard>
+                        <div style={{ position: "relative" }}>
+                            <Avatar
+                              src={card.logo}
+                              variant="square"
+                              sx={{ height: 170, width: "100%" }}
+                            />
+                          </div>
                           <CardContent sx={{ p: 3, pt: 2 }}>
                             <Typography variant="h6">
                               {card.storeName}
@@ -994,6 +1009,13 @@ const MallMapPage = () => {
                     .map((card: any, index: number) => (
                       <Grid item xs={12} md={4} lg={4} key={card.id + index}>
                         <BlankCard>
+                        <div style={{ position: "relative" }}>
+                            <Avatar
+                              src={card.logo}
+                              variant="square"
+                              sx={{ height: 170, width: "100%" }}
+                            />
+                          </div>
                           <CardContent sx={{ p: 3, pt: 2 }}>
                             <Typography variant="h6">
                               {card.storeName}
