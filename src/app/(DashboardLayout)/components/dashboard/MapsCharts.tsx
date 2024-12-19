@@ -79,7 +79,7 @@ const SalesOverview = ({
   useEffect(() => {
     if (hasUpdatedRef.current) return; // Skip if already updated
     if (chartData.clicks.length === 0) return;
-    if (getAllDataFromGraph) getAllDataFromGraph(chartData);
+    // if (getAllDataFromGraph) getAllDataFromGraph(chartData);
   }, [chartData]);
 
   useEffect(() => {
@@ -131,6 +131,8 @@ const SalesOverview = ({
                 }
               }
 
+              getAllDataFromGraph(collectedData);
+              
               // Sort data by searches in descending order and slice to get top 5
               const top5Data = collectedData
                 .sort((a, b) => b.searchs - a.searchs)

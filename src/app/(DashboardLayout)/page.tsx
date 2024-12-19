@@ -34,7 +34,11 @@ const Dashboard = () => {
   function removeDuplicateArrays(arrays: any[]) {
     const seen = new Set();
 
-    return arrays.filter((arr: any) => {
+    return arrays.filter((arr: any[]) => {
+      if (arr.find((item: any) => item?.Date)) {
+        return [...arr].reverse();
+      }
+
       // Sort and stringify the array for consistent comparison
       const key = JSON.stringify(arr, (k, v) =>
         Array.isArray(v)
@@ -116,7 +120,7 @@ const Dashboard = () => {
               }) || "",
           }));
 
-          return csvData;
+          return [...csvData].reverse();
         }
       }
     });
