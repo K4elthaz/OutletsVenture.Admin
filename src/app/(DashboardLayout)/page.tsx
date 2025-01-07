@@ -158,7 +158,7 @@ const Dashboard = () => {
   };
   const downloadExcel = async (data: any) => {
     try {
-      const response = await fetch('http://195.26.255.19:3005/generate-chart', {
+      const response = await fetch('https://outletsexcelgenerator.onrender.com/generate-chart', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
