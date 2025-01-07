@@ -70,7 +70,6 @@ const Dashboard = () => {
 
     // Modify the visits overview
     dataFromGraph[1] = await fetchAllVisitsData();
-
     // Format the data for export
     const newDataSet = dataFromGraph.map((data: any, index: number) => {
       if (Array.isArray(data)) {
@@ -127,33 +126,60 @@ const Dashboard = () => {
 
     // Remove duplicate arrays
     const filteredData = removeDuplicateArrays(newDataSet);
+    await downloadExcel(filteredData);
 
-    // Create a worksheet for each data set
-    filteredData.forEach((data: any, index: number) => {
-      let worksheet;
-      let sheetName;
-      const headerNames = Object.keys(data[0]);
+    // console.log("filtered data", filteredData);
+    // // Create a worksheet for each data set
+    // filteredData.forEach((data: any, index: number) => {
+    //   let worksheet;
+    //   let sheetName;
+    //   const headerNames = Object.keys(data[0]);
 
-      worksheet = XLSX.utils.json_to_sheet(data, {
-        header: headerNames,
+    //   worksheet = XLSX.utils.json_to_sheet(data, {
+    //     header: headerNames,
+    //   });
+
+    //   if (index === 0) {
+    //     sheetName = "Amenities Usage & Preference";
+    //   } else if (index === 1) {
+    //     sheetName = "Visits Overview";
+    //   } else if (index === 2) {
+    //     sheetName = "Maps Clicks & Searches";
+    //   } else if (index === 3) {
+    //     sheetName = "Shop Clicks & Searches";
+    //   } else {
+    //     sheetName = `Sheet${index + 1}`;
+    //   }
+
+    //   XLSX.utils.book_append_sheet(workbook, worksheet, sheetName);
+    // });
+
+    // XLSX.writeFile(workbook, "Dashboard_Data.xlsx");
+  };
+  const downloadExcel = async (data: any) => {
+    try {
+      const response = await fetch('http://195.26.255.19:3005/generate-chart', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
       });
 
-      if (index === 0) {
-        sheetName = "Amenities Usage & Preference";
-      } else if (index === 1) {
-        sheetName = "Visits Overview";
-      } else if (index === 2) {
-        sheetName = "Maps Clicks & Searches";
-      } else if (index === 3) {
-        sheetName = "Shop Clicks & Searches";
-      } else {
-        sheetName = `Sheet${index + 1}`;
-      }
-
-      XLSX.utils.book_append_sheet(workbook, worksheet, sheetName);
-    });
-
-    XLSX.writeFile(workbook, "Dashboard_Data.xlsx");
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'analytics_charts.xlsx');
+      document.body.appendChild(link);
+      link.click();
+      
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error('Error downloading file:', error);
+    }
   };
 
   // const exportToExcel = () => {
